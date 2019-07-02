@@ -18,6 +18,9 @@ class PokemonForm extends React.Component {
   };
 
   handleChange = e => {
+    // const temp = {};
+    // temp[e.target.name] = e.target.value
+    // this.setState(temp);
     this.setState({ [e.target.name]: e.target.value });
   };
 

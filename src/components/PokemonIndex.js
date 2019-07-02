@@ -23,6 +23,9 @@ class PokemonPage extends React.Component {
       .catch(err => console.log(err));
   }
 
+  // handleSearchChange = (e, data) => {
+  //   this.setState({ searchTerm: data.value });
+  // };
   handleSearchChange = (e, { value }) => {
     this.setState({ searchTerm: value });
   };
