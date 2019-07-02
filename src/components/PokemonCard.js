@@ -2,16 +2,26 @@ import React from "react";
 import { Card } from "semantic-ui-react";
 
 class PokemonCard extends React.Component {
+  state = {
+    seeFront: true
+  };
+
+  handleCardSideToggle = () => {
+    this.setState({ seeFront: !this.state.seeFront });
+  };
+
   render() {
+    const hp =
+      this.props.pokemon.stats.find(stat => stat.name === "hp").value || 40;
     return (
-      <Card onClick={() => this.props.handleCardToggle(this.props.pokemon)}>
+      <Card onClick={this.handleCardSideToggle}>
         <div>
           <div className="image">
             <img
               src={
-                this.props.pokemon.isClicked
-                  ? this.props.pokemon.sprites.back
-                  : this.props.pokemon.sprites.front
+                this.state.seeFront
+                  ? this.props.pokemon.sprites.front
+                  : this.props.pokemon.sprites.back
               }
               alt="oh no!"
             />
@@ -22,9 +32,7 @@ class PokemonCard extends React.Component {
           <div className="extra content">
             <span>
               <i className="icon heartbeat red" />
-              {this.props.pokemon.stats[5]
-                ? this.props.pokemon.stats[5].value
-                : 50}
+              {hp}
             </span>
           </div>
         </div>

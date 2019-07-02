@@ -1,8 +1,9 @@
 import React from "react";
 import PokemonCollection from "./PokemonCollection";
 import PokemonForm from "./PokemonForm";
-import { Search } from "semantic-ui-react";
-import _ from "lodash";
+// import { Search } from "semantic-ui-react";
+import MySearch from "./MySearch";
+// import _ from "lodash";
 
 class PokemonPage extends React.Component {
   constructor() {
@@ -23,24 +24,21 @@ class PokemonPage extends React.Component {
       .catch(err => console.log(err));
   }
 
-  // handleSearchChange = (e, data) => {
-  //   this.setState({ searchTerm: data.value });
-  // };
-  handleSearchChange = (e, { value }) => {
-    this.setState({ searchTerm: value });
+  handleSearchChange = e => {
+    this.setState({ searchTerm: e.target.value });
   };
 
-  handleCardToggle = pokemon => {
-    const col = this.state.pokemonList;
-    const i = col.indexOf(pokemon);
-    this.setState({
-      pokemonList: [
-        ...col.slice(0, i),
-        // initially pokemon.isClicked is undefined; inverting that falsey value makes it true
-        { ...pokemon, isClicked: !pokemon.isClicked },
-        ...col.slice(i + 1)
-      ]
-    });
+  handleSubmit = e => {
+    e.preventDefault();
+    this.filter();
+  };
+
+  filter = () => {
+    let newPokeList = Array.from(this.state.pokemonList);
+    let filteredList = newPokeList.filter(poke =>
+      poke.name.includes(this.state.searchTerm)
+    );
+    this.setState({ pokemonList: filteredList });
   };
 
   handleAddPokemon = pokemon => {
@@ -50,22 +48,27 @@ class PokemonPage extends React.Component {
   };
 
   render() {
+    let newPokeList = Array.from(this.state.pokemonList);
+    let filteredList = newPokeList.filter(poke =>
+      poke.name.includes(this.state.searchTerm)
+    );
     return (
       <div>
         <h1>Pokemon Searcher</h1>
         <br />
-        <Search
+        {/* <Search
           onSearchChange={_.debounce(this.handleSearchChange, 500)}
           showNoResults={false}
-        />
-        <br />
-        <PokemonCollection
-          pokemonList={this.state.pokemonList}
-          seeFront={this.state.seeFront}
-          handleCardToggle={this.handleCardToggle}
+        /> */}
+        <MySearch
+          searchTerm={this.state.searchTerm}
+          handleSearchChange={this.handleSearchChange}
+          handleSubmit={this.handleSubmit}
         />
         <br />
         <PokemonForm handleAddPokemon={this.handleAddPokemon} />
+        <br />
+        <PokemonCollection pokemonList={filteredList} />
       </div>
     );
   }
